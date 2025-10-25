@@ -42,3 +42,8 @@ class CurrencyFormatter {
     return NumberFormat('#,##0.00').format(amount);
   }
 }
+
+/// Helper function for quick currency formatting (KRW)
+String formatCurrency(double amount) {
+  return CurrencyFormatter.formatKRW(amount);
+}

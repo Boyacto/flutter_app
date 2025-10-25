@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/jar.dart';
 import '../models/event.dart';
+import '../models/jar_v2.dart';
+import '../models/user_balance.dart';
+import '../models/game.dart';
 
 /// Local storage service using SharedPreferences
 class StorageService {
@@ -10,6 +13,11 @@ class StorageService {
   static const String _keyLocale = 'locale';
   static const String _keyThemeMode = 'theme_mode';
   static const String _keyReduceMotion = 'reduce_motion';
+
+  // New OneUp keys
+  static const String _keyJarsV2 = 'jars_v2';
+  static const String _keyUserBalance = 'user_balance';
+  static const String _keyGameState = 'game_state';
 
   SharedPreferences? _prefs;
 
@@ -124,6 +132,78 @@ class StorageService {
   /// Load reduce motion preference
   bool loadReduceMotion() {
     return prefs.getBool(_keyReduceMotion) ?? false;
+  }
+
+  // ============================================================================
+  // ONEUP - USER BALANCE
+  // ============================================================================
+
+  /// Save user balance
+  Future<bool> saveUserBalance(UserBalance balance) async {
+    final json = jsonEncode(balance.toJson());
+    return prefs.setString(_keyUserBalance, json);
+  }
+
+  /// Load user balance
+  UserBalance? loadUserBalance() {
+    final json = prefs.getString(_keyUserBalance);
+    if (json == null) return null;
+
+    try {
+      final map = jsonDecode(json) as Map<String, dynamic>;
+      return UserBalance.fromJson(map);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================================================
+  // ONEUP - JARS V2
+  // ============================================================================
+
+  /// Save jars
+  Future<bool> saveJarsV2(List<JarV2> jars) async {
+    final jsonList = jars.map((j) => j.toJson()).toList();
+    final json = jsonEncode(jsonList);
+    return prefs.setString(_keyJarsV2, json);
+  }
+
+  /// Load jars
+  List<JarV2>? loadJarsV2() {
+    final json = prefs.getString(_keyJarsV2);
+    if (json == null) return null;
+
+    try {
+      final list = jsonDecode(json) as List;
+      return list
+          .map((item) => JarV2.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================================================
+  // ONEUP - GAME STATE
+  // ============================================================================
+
+  /// Save game state
+  Future<bool> saveGameState(Game game) async {
+    final json = jsonEncode(game.toJson());
+    return prefs.setString(_keyGameState, json);
+  }
+
+  /// Load game state
+  Game? loadGameState() {
+    final json = prefs.getString(_keyGameState);
+    if (json == null) return null;
+
+    try {
+      final map = jsonDecode(json) as Map<String, dynamic>;
+      return Game.fromJson(map);
+    } catch (e) {
+      return null;
+    }
   }
 
   // ============================================================================

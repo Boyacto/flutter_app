@@ -104,3 +104,8 @@ class DateFormatter {
     }
   }
 }
+
+/// Helper function for quick relative time formatting
+String formatRelativeTime(DateTime date) {
+  return DateFormatter.formatRelative(date);
+}

@@ -1,41 +1,49 @@
 import 'package:flutter/material.dart';
+import 'app_shell.dart';
 import 'features/onboarding/onboarding_screen.dart';
-import 'features/home/home_screen.dart';
-import 'features/activity/activity_screen.dart';
-import 'features/rules/rules_screen.dart';
-import 'features/goal/goal_screen.dart';
 import 'features/settings/settings_screen.dart';
-import 'features/simulate/simulate_screen.dart';
 
 /// App routing configuration
 class AppRouter {
   AppRouter._();
 
   static const String onboarding = '/onboarding';
-  static const String home = '/home';
-  static const String activity = '/activity';
-  static const String rules = '/rules';
-  static const String goal = '/goal';
+  static const String home = '/';
   static const String settings = '/settings';
-  static const String simulate = '/simulate';
+  static const String jarDetail = '/jar-detail';
+  static const String game = '/game';
 
   /// Generate routes
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/onboarding':
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
-      case '/home':
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case '/activity':
-        return MaterialPageRoute(builder: (_) => const ActivityScreen());
-      case '/rules':
-        return MaterialPageRoute(builder: (_) => const RulesScreen());
-      case '/goal':
-        return MaterialPageRoute(builder: (_) => const GoalScreen());
+
+      case '/':
+        return MaterialPageRoute(builder: (_) => const AppShell());
+
       case '/settings':
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
-      case '/simulate':
-        return MaterialPageRoute(builder: (_) => const SimulateScreen());
+
+      case '/jar-detail':
+        // final jarId = settings.arguments as String;
+        // return MaterialPageRoute(builder: (_) => JarDetailScreen(jarId: jarId));
+        // TODO: Implement jar detail screen
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text('Jar Detail - Coming soon')),
+          ),
+        );
+
+      case '/game':
+        // return MaterialPageRoute(builder: (_) => const GameScreen());
+        // TODO: Implement game screen
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(
+            body: Center(child: Text('Game - Coming soon')),
+          ),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -47,8 +55,9 @@ class AppRouter {
     }
   }
 
-  /// Get initial route based on whether it's first launch
-  static String getInitialRoute(bool isFirstLaunch) {
-    return isFirstLaunch ? onboarding : home;
+  /// Get initial route
+  static String getInitialRoute() {
+    // For hackathon, skip onboarding
+    return home;
   }
 }

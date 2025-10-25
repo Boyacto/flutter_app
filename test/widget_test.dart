@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/core/services/storage_service.dart';
+import 'package:flutter_app/state/app_providers.dart';
 
 void main() {
-  testWidgets('Saving Jar app smoke test', (WidgetTester tester) async {
+  testWidgets('OneUp app smoke test', (WidgetTester tester) async {
     // Initialize storage for testing
     final storage = StorageService();
     await storage.init();
@@ -14,9 +15,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          // Use a mock storage service for testing
+          storageServiceProvider.overrideWithValue(storage),
         ],
-        child: const SavingJarApp(isFirstLaunch: false),
+        child: const OneUpApp(),
       ),
     );
 
@@ -24,6 +25,6 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify that the home screen is displayed
-    expect(find.text('Saving Jar'), findsOneWidget);
+    expect(find.text('OneUp'), findsOneWidget);
   });
 }

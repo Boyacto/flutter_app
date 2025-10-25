@@ -1,164 +1,127 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../state/app_providers.dart';
+import '../../state/jar_providers.dart';
 import '../../theme/tokens.dart';
-import '../../core/widgets/goal_card.dart';
-import '../../core/widgets/summary_card.dart';
-import '../../core/widgets/quick_topup_row.dart';
-import '../../core/widgets/auto_toggle_tile.dart';
-import '../../core/widgets/info_banner.dart';
-import '../../core/models/event.dart';
-import '../../core/utils/date.dart';
-import '../../state/providers.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final jar = ref.watch(jarProvider);
-    final stats = ref.watch(sessionStatsProvider);
+    final balance = ref.watch(userBalanceProvider);
+    final jarsAsync = ref.watch(jarsProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saving Jar'),
+        title: const Text('OneUp'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.pushNamed(context, '/settings'),
-            tooltip: 'Settings',
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(AppTokens.s16),
-        children: [
-          // Paused banner
-          if (jar.isPaused)
-            InfoBanner(
-              text: 'Round-up paused until ${DateFormatter.formatDate(jar.pausedUntil!)}',
-              icon: Icons.pause_circle,
-              tint: AppTokens.accentRed,
-            ),
-
-          // Auto off banner
-          if (!jar.isAutoOn)
-            InfoBanner(
-              text: 'Auto round-up is off. Turn it on to start saving!',
-              icon: Icons.info_outline,
-              tint: AppTokens.accentRed,
-            ),
-
-          const SizedBox(height: AppTokens.s8),
-
-          // Goal card
-          GoalCard(
-            goalName: jar.name,
-            current: jar.balance,
-            target: jar.goalAmount,
-            etaText: DateFormatter.formatETA(jar.deadline),
-          ),
-
-          const SizedBox(height: AppTokens.s16),
-
-          // Today summary
-          TodaySummaryCard(
-            todayRoundUp: stats.todayRoundUp,
-            weekRoundUp: stats.weekRoundUp,
-          ),
-
-          const SizedBox(height: AppTokens.s16),
-
-          // Quick top-up
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(AppTokens.s20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Quick Top-up',
-                    style: AppTokens.subtitle.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: AppTokens.s16),
-                  QuickTopUpRow(
-                    onTopUp: (amount) => _handleTopUp(context, ref, amount),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: AppTokens.s16),
-
-          // Auto toggle
-          AutoRoundUpToggleTile(
-            value: jar.isAutoOn,
-            onChanged: (_) {
-              ref.read(jarProvider.notifier).toggleAuto();
+            icon: const Icon(Icons.notifications_outlined),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Notifications coming soon')),
+              );
             },
           ),
-
-          const SizedBox(height: AppTokens.s16),
-
-          // Simulate purchase button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, '/simulate'),
-              icon: const Icon(Icons.play_arrow),
-              label: const Text('Simulate Purchase'),
-            ),
-          ),
-
-          const SizedBox(height: AppTokens.s8),
-
-          // View activity button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, '/activity'),
-              icon: const Icon(Icons.history),
-              label: const Text('View Activity'),
-            ),
-          ),
-
-          const SizedBox(height: AppTokens.s8),
-
-          // Rules button
-          SizedBox(
-            width: double.infinity,
-            child: TextButton.icon(
-              onPressed: () => Navigator.pushNamed(context, '/rules'),
-              icon: const Icon(Icons.tune),
-              label: const Text('Configure Rules'),
-            ),
-          ),
         ],
       ),
-    );
-  }
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(jarsProvider);
+        },
+        child: ListView(
+          padding: const EdgeInsets.all(AppTokens.s16),
+          children: [
+            // Balance card placeholder
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(AppTokens.s24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Current Balance',
+                      style: AppTokens.body.copyWith(color: AppTokens.gray500),
+                    ),
+                    const SizedBox(height: AppTokens.s8),
+                    Text(
+                      '₩${balance.currentBalance.toStringAsFixed(0)}',
+                      style: AppTokens.display.copyWith(
+                        color: AppTokens.navy,
+                        fontSize: 36,
+                      ),
+                    ),
+                    const Divider(height: AppTokens.s32),
+                    Text(
+                      'Jars',
+                      style: AppTokens.subtitle.copyWith(color: AppTokens.navy),
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
-  void _handleTopUp(BuildContext context, WidgetRef ref, double amount) {
-    // Add to balance
-    ref.read(jarProvider.notifier).addToBalance(amount);
+            const SizedBox(height: AppTokens.s24),
 
-    // Create event
-    final jar = ref.read(jarProvider);
-    final event = Event.topUp(
-      id: 'topup_${DateTime.now().millisecondsSinceEpoch}',
-      timestamp: DateTime.now(),
-      amount: amount,
-      jarBalanceAfter: jar.balance,
-    );
-    ref.read(eventsProvider.notifier).addEvent(event);
+            // Jars section
+            jarsAsync.when(
+              data: (jars) {
+                if (jars.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppTokens.s24),
+                      child: Text('No jars yet. Create your first jar!'),
+                    ),
+                  );
+                }
 
-    // Show snackbar
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('+\$$amount added to your jar!'),
-        duration: const Duration(seconds: 2),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'My Jars',
+                      style: AppTokens.title.copyWith(color: AppTokens.navy),
+                    ),
+                    const SizedBox(height: AppTokens.s16),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: jars.length,
+                      itemBuilder: (context, index) {
+                        final jar = jars[index];
+                        return Card(
+                          margin: const EdgeInsets.only(bottom: AppTokens.s8),
+                          child: ListTile(
+                            leading: Text(
+                              jar.emoji,
+                              style: const TextStyle(fontSize: 32),
+                            ),
+                            title: Text(jar.name),
+                            subtitle: LinearProgressIndicator(
+                              value: jar.progress.clamp(0.0, 1.0),
+                              backgroundColor: AppTokens.gray200,
+                              valueColor: const AlwaysStoppedAnimation(
+                                AppTokens.teal,
+                              ),
+                            ),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {
+                              // TODO: Navigate to jar detail
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Center(child: Text('Error: $err')),
+            ),
+          ],
+        ),
       ),
     );
   }
