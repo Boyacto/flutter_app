@@ -16,4 +16,7 @@ class FeatureFlags {
 
   /// Enable debug logging
   static const bool enableDebugLogging = true;
+
+  /// Enable daily reward feature
+  static const bool enableDailyReward = true;
 }

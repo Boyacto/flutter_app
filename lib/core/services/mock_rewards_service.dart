@@ -48,14 +48,14 @@ class MockRewardsService {
     ),
   ];
 
-  // Demo coupons catalog
+  // Demo coupons catalog - Mexican & American brands
   final List<Coupon> _availableCoupons = [
     Coupon(
       id: '1',
       brandName: 'Starbucks',
       productName: 'Americano',
       brandImage: '☕',
-      couponCode: 'SAVE5000',
+      couponCode: 'SBUX2024',
       pointsCost: 100,
     ),
     Coupon(
@@ -68,35 +68,35 @@ class MockRewardsService {
     ),
     Coupon(
       id: '3',
-      brandName: 'CGV',
+      brandName: 'Cinemex',
       productName: 'Movie Ticket',
       brandImage: '🎬',
-      couponCode: 'MOVIE10',
+      couponCode: 'CINE2024',
       pointsCost: 200,
     ),
     Coupon(
       id: '4',
-      brandName: 'YES24',
-      productName: 'Book Voucher',
-      brandImage: '📚',
-      couponCode: 'BOOK2024',
-      pointsCost: 120,
+      brandName: 'Liverpool',
+      productName: 'Gift Card',
+      brandImage: '🏬',
+      couponCode: 'LIV250',
+      pointsCost: 250,
     ),
     Coupon(
       id: '5',
-      brandName: 'GS25',
+      brandName: 'OXXO',
       productName: 'Snack Bundle',
       brandImage: '🍿',
-      couponCode: 'GS5000',
+      couponCode: 'OXXO80',
       pointsCost: 80,
     ),
     Coupon(
       id: '6',
-      brandName: 'Subway',
-      productName: 'Sandwich',
-      brandImage: '🥪',
-      couponCode: 'SUB2024',
-      pointsCost: 110,
+      brandName: 'Domino\'s',
+      productName: 'Large Pizza',
+      brandImage: '🍕',
+      couponCode: 'PIZZA2024',
+      pointsCost: 180,
     ),
   ];
 

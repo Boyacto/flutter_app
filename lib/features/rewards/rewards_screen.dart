@@ -7,7 +7,9 @@ import '../../state/game_session_provider.dart';
 import '../../theme/tokens.dart';
 import '../../app_router.dart';
 import '../../core/models/mission.dart';
+import '../../core/config/feature_flags.dart';
 import 'widgets/points_counter.dart';
+import 'widgets/daily_reward_card.dart';
 import '../../core/widgets/mission_card.dart';
 import '../../core/widgets/game_card.dart';
 import 'modals/coupon_catalog_modal.dart';
@@ -43,6 +45,12 @@ class RewardsScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(AppTokens.s16),
           children: [
+            // Daily Reward Section
+            if (FeatureFlags.enableDailyReward) ...[
+              const DailyRewardCard(),
+              const SizedBox(height: AppTokens.s16),
+            ],
+
             // Games Section
             Text(
               'Games',
