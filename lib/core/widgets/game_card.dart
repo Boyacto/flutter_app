@@ -4,11 +4,7 @@ import '../utils/currency.dart';
 import '../../theme/tokens.dart';
 
 class GameCardWidget extends StatelessWidget {
-  const GameCardWidget({
-    super.key,
-    required this.game,
-    required this.onTap,
-  });
+  const GameCardWidget({super.key, required this.game, required this.onTap});
 
   final Game game;
   final VoidCallback onTap;
@@ -32,7 +28,10 @@ class GameCardWidget extends StatelessWidget {
                   borderRadius: AppTokens.radius12,
                 ),
                 child: Center(
-                  child: Text(game.thumbnail, style: const TextStyle(fontSize: 32)),
+                  child: Text(
+                    game.thumbnail,
+                    style: const TextStyle(fontSize: 32),
+                  ),
                 ),
               ),
 
@@ -50,7 +49,9 @@ class GameCardWidget extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '${game.remainingAttempts + game.bonusRetries} tries left',
-                      style: AppTokens.caption.copyWith(color: AppTokens.gray500),
+                      style: AppTokens.caption.copyWith(
+                        color: AppTokens.gray500,
+                      ),
                     ),
                   ],
                 ),

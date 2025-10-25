@@ -87,15 +87,12 @@ class UserBalanceNotifier extends StateNotifier<UserBalance> {
     _save();
   }
 
-  void _save() {
-    // Fire-and-forget: save asynchronously without blocking UI
-    Future(() async {
-      try {
-        final storage = ref.read(storageServiceProvider);
-        await storage.saveUserBalance(state);
-      } catch (e) {
-        // Handle error silently for now
-      }
-    });
+  Future<void> _save() async {
+    try {
+      final storage = ref.read(storageServiceProvider);
+      await storage.saveUserBalance(state);
+    } catch (e) {
+      // Handle error silently for now
+    }
   }
 }

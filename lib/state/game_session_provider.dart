@@ -98,15 +98,12 @@ class GameNotifier extends StateNotifier<AsyncValue<Game>> {
     _loadGame();
   }
 
-  void _saveToStorage(Game game) {
-    // Fire-and-forget: save asynchronously without blocking UI
-    Future(() async {
-      try {
-        final storage = ref.read(storageServiceProvider);
-        await storage.saveGameState(game);
-      } catch (e) {
-        // Handle error silently
-      }
-    });
+  Future<void> _saveToStorage(Game game) async {
+    try {
+      final storage = ref.read(storageServiceProvider);
+      await storage.saveGameState(game);
+    } catch (e) {
+      // Handle error silently
+    }
   }
 }

@@ -141,16 +141,13 @@ class JarsNotifier extends StateNotifier<AsyncValue<List<JarV2>>> {
     });
   }
 
-  void _saveToStorage(List<JarV2> jars) {
-    // Fire-and-forget: save asynchronously without blocking UI
-    Future(() async {
-      try {
-        final storage = ref.read(storageServiceProvider);
-        await storage.saveJarsV2(jars);
-      } catch (e) {
-        // Handle error silently
-      }
-    });
+  Future<void> _saveToStorage(List<JarV2> jars) async {
+    try {
+      final storage = ref.read(storageServiceProvider);
+      await storage.saveJarsV2(jars);
+    } catch (e) {
+      // Handle error silently
+    }
   }
 }
 

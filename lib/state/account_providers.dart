@@ -107,16 +107,13 @@ class AccountsNotifier extends StateNotifier<AsyncValue<List<Account>>> {
     return await service.findAvailableAccount();
   }
 
-  void _saveToStorage(List<Account> accounts) {
-    // Fire-and-forget: save asynchronously without blocking UI
-    Future(() async {
-      try {
-        final storage = ref.read(storageServiceProvider);
-        await storage.saveAccounts(accounts);
-      } catch (e) {
-        // Handle error silently - storage might not have this method yet
-      }
-    });
+  Future<void> _saveToStorage(List<Account> accounts) async {
+    try {
+      final storage = ref.read(storageServiceProvider);
+      await storage.saveAccounts(accounts);
+    } catch (e) {
+      // Handle error silently - storage might not have this method yet
+    }
   }
 }
 
