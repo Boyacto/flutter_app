@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
             InfoBanner(
               text: 'Round-up paused until ${DateFormatter.formatDate(jar.pausedUntil!)}',
               icon: Icons.pause_circle,
-              tint: AppTokens.amber500,
+              tint: AppTokens.accentRed,
             ),
 
           // Auto off banner
@@ -45,7 +45,7 @@ class HomeScreen extends ConsumerWidget {
             InfoBanner(
               text: 'Auto round-up is off. Turn it on to start saving!',
               icon: Icons.info_outline,
-              tint: AppTokens.amber500,
+              tint: AppTokens.accentRed,
             ),
 
           const SizedBox(height: AppTokens.s8),

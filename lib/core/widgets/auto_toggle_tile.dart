@@ -35,7 +35,7 @@ class AutoRoundUpToggleTile extends StatelessWidget {
         ),
         secondary: Icon(
           value ? Icons.savings : Icons.pause_circle_outline,
-          color: value ? AppTokens.mint600 : AppTokens.gray500,
+          color: value ? AppTokens.navy : AppTokens.gray500,
         ),
       ),
     );

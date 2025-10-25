@@ -172,7 +172,7 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       applicationName: 'Saving Jar',
       applicationVersion: '1.0.0',
-      applicationIcon: const Icon(Icons.savings, size: 48, color: AppTokens.mint600),
+      applicationIcon: const Icon(Icons.savings, size: 48, color: AppTokens.navy),
       children: [
         const Text('A demo app for round-up savings with mock Capital One API integration.'),
         const SizedBox(height: 16),

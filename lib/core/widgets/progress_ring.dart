@@ -45,9 +45,9 @@ class ProgressRing extends StatelessWidget {
             painter: _RingPainter(
               progress: clampedProgress,
               strokeWidth: strokeWidth,
-              color: AppTokens.mint600,
+              color: AppTokens.navy,
               gradient: LinearGradient(
-                colors: [AppTokens.mint600, AppTokens.teal500],
+                colors: [AppTokens.navy, AppTokens.teal],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),

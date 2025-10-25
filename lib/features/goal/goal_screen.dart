@@ -99,7 +99,7 @@ class GoalScreen extends ConsumerWidget {
                 label: const Text('Empty Jar'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: AppTokens.s20),
-                  backgroundColor: AppTokens.amber500,
+                  backgroundColor: AppTokens.accentRed,
                 ),
               ),
             ),
@@ -291,13 +291,13 @@ class _MilestoneBadge extends StatelessWidget {
           padding: const EdgeInsets.all(AppTokens.s12),
           decoration: BoxDecoration(
             color: isUnlocked
-                ? AppTokens.amber500.withValues(alpha: 0.1)
+                ? AppTokens.accentRed.withValues(alpha: 0.1)
                 : AppTokens.gray200,
             shape: BoxShape.circle,
           ),
           child: Icon(
             icon,
-            color: isUnlocked ? AppTokens.amber500 : AppTokens.gray500,
+            color: isUnlocked ? AppTokens.accentRed : AppTokens.gray500,
             size: 24,
           ),
         ),

@@ -82,7 +82,7 @@ class _StatItem extends StatelessWidget {
           value,
           style: AppTokens.title.copyWith(
             fontSize: 20,
-            color: AppTokens.mint600,
+            color: AppTokens.navy,
           ),
         ),
       ],

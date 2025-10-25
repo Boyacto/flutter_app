@@ -56,7 +56,7 @@ class GoalCard extends StatelessWidget {
                       value: progress,
                       minHeight: 8,
                       backgroundColor: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-                      valueColor: const AlwaysStoppedAnimation(AppTokens.mint600),
+                      valueColor: const AlwaysStoppedAnimation(AppTokens.navy),
                     ),
                   ),
                 ),

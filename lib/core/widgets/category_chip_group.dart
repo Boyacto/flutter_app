@@ -36,7 +36,7 @@ class CategoryChipGroup extends StatelessWidget {
             }
             onChanged(newSelected);
           },
-          selectedColor: AppTokens.mint600,
+          selectedColor: AppTokens.navy,
           checkmarkColor: Colors.white,
           backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
           labelStyle: AppTokens.label.copyWith(

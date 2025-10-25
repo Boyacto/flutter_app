@@ -40,7 +40,7 @@ class SliderRow extends StatelessWidget {
             Text(
               '${value.toStringAsFixed(0)}$suffix',
               style: AppTokens.body.copyWith(
-                color: AppTokens.mint600,
+                color: AppTokens.navy,
                 fontWeight: FontWeight.w600,
               ),
             ),

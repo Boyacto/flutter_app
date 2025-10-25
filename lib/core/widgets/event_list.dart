@@ -105,8 +105,8 @@ class _RoundUpItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: AppTokens.mint600.withValues(alpha: 0.1),
-        child: const Icon(Icons.arrow_upward, color: AppTokens.mint600, size: 20),
+        backgroundColor: AppTokens.navy.withValues(alpha: 0.1),
+        child: const Icon(Icons.arrow_upward, color: AppTokens.navy, size: 20),
       ),
       title: Text(
         event.merchant ?? 'Round-up',
@@ -125,7 +125,7 @@ class _RoundUpItem extends StatelessWidget {
         '+${CurrencyFormatter.formatUSD(event.amountDelta)}',
         style: AppTokens.body.copyWith(
           fontWeight: FontWeight.w600,
-          color: AppTokens.mint600,
+          color: AppTokens.navy,
         ),
       ),
     );
@@ -142,8 +142,8 @@ class _TopUpItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: AppTokens.amber500.withValues(alpha: 0.1),
-        child: const Icon(Icons.add_circle, color: AppTokens.amber500, size: 20),
+        backgroundColor: AppTokens.accentRed.withValues(alpha: 0.1),
+        child: const Icon(Icons.add_circle, color: AppTokens.accentRed, size: 20),
       ),
       title: Text(
         'Manual Top-up',
@@ -162,7 +162,7 @@ class _TopUpItem extends StatelessWidget {
         '+${CurrencyFormatter.formatUSD(event.amountDelta)}',
         style: AppTokens.body.copyWith(
           fontWeight: FontWeight.w600,
-          color: AppTokens.amber500,
+          color: AppTokens.accentRed,
         ),
       ),
     );
@@ -209,14 +209,14 @@ class _GoalAchievedItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: AppTokens.amber500.withValues(alpha: 0.1),
-        child: const Icon(Icons.emoji_events, color: AppTokens.amber500, size: 20),
+        backgroundColor: AppTokens.accentRed.withValues(alpha: 0.1),
+        child: const Icon(Icons.emoji_events, color: AppTokens.accentRed, size: 20),
       ),
       title: Text(
         'Goal Achieved!',
         style: AppTokens.body.copyWith(
           fontWeight: FontWeight.w600,
-          color: AppTokens.amber500,
+          color: AppTokens.accentRed,
         ),
       ),
       subtitle: Text(
@@ -225,7 +225,7 @@ class _GoalAchievedItem extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
         ),
       ),
-      trailing: const Icon(Icons.celebration, color: AppTokens.amber500),
+      trailing: const Icon(Icons.celebration, color: AppTokens.accentRed),
     );
   }
 }

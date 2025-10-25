@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'tokens.dart';
 
 /// App theme configuration for light and dark modes
-/// Ensures 4.5:1 contrast ratio for accessibility
+/// Flat design with Navy/Teal/Red color scheme
 class AppTheme {
   AppTheme._();
 
@@ -11,43 +11,47 @@ class AppTheme {
   // ============================================================================
 
   static ThemeData light() {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: AppTokens.navy,
+      brightness: Brightness.light,
+    ).copyWith(
+      primary: AppTokens.navy,
+      onPrimary: Colors.white,
+      secondary: AppTokens.teal,
+      onSecondary: Colors.white,
+      tertiary: AppTokens.accentRed,
+      error: AppTokens.errorRed,
+      surface: Colors.white,
+      onSurface: AppTokens.gray900,
+      surfaceContainerHighest: AppTokens.grayBg,
+      outline: AppTokens.gray200,
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-
-      // Color scheme
-      colorScheme: ColorScheme.light(
-        primary: AppTokens.mint600,
-        onPrimary: Colors.white,
-        secondary: AppTokens.amber500,
-        onSecondary: AppTokens.gray900,
-        tertiary: AppTokens.teal500,
-        error: AppTokens.errorRed,
-        surface: Colors.white,
-        onSurface: AppTokens.gray900,
-        surfaceContainerHighest: AppTokens.gray50,
-        outline: AppTokens.gray200,
-      ),
+      colorScheme: scheme,
 
       // Scaffold
-      scaffoldBackgroundColor: AppTokens.gray50,
+      scaffoldBackgroundColor: Colors.white,
 
       // AppBar
       appBarTheme: AppBarTheme(
         elevation: 0,
         backgroundColor: Colors.white,
-        foregroundColor: AppTokens.gray900,
-        titleTextStyle: AppTokens.title.copyWith(color: AppTokens.gray900),
+        foregroundColor: AppTokens.navy,
+        titleTextStyle: AppTokens.title.copyWith(color: AppTokens.navy),
         centerTitle: false,
       ),
 
       // Card
       cardTheme: CardThemeData(
-        elevation: AppTokens.e1,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: AppTokens.radius16,
+          borderRadius: AppTokens.radius24,
         ),
         color: Colors.white,
+        surfaceTintColor: scheme.surfaceTint,
         margin: const EdgeInsets.symmetric(
           horizontal: AppTokens.s16,
           vertical: AppTokens.s8,
@@ -57,15 +61,15 @@ class AppTheme {
       // Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTokens.mint600,
+          backgroundColor: AppTokens.navy,
           foregroundColor: Colors.white,
-          elevation: AppTokens.e1,
+          elevation: 0,
           padding: const EdgeInsets.symmetric(
-            horizontal: AppTokens.s24,
-            vertical: AppTokens.s16,
+            horizontal: AppTokens.s16,
+            vertical: 14,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: AppTokens.radius12,
+            borderRadius: AppTokens.radius16,
           ),
           textStyle: AppTokens.label,
         ),
@@ -74,7 +78,7 @@ class AppTheme {
       // Text button
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppTokens.mint600,
+          foregroundColor: AppTokens.navy,
           padding: const EdgeInsets.symmetric(
             horizontal: AppTokens.s16,
             vertical: AppTokens.s12,
@@ -89,14 +93,14 @@ class AppTheme {
       // Outlined button
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppTokens.mint600,
-          side: const BorderSide(color: AppTokens.mint600, width: 1.5),
+          foregroundColor: AppTokens.navy,
+          side: const BorderSide(color: AppTokens.navy, width: 1.5),
           padding: const EdgeInsets.symmetric(
             horizontal: AppTokens.s24,
             vertical: AppTokens.s16,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: AppTokens.radius12,
+            borderRadius: AppTokens.radius16,
           ),
           textStyle: AppTokens.label,
         ),
@@ -107,19 +111,19 @@ class AppTheme {
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.gray200),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.gray200),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
-          borderSide: const BorderSide(color: AppTokens.mint600, width: 2),
+          borderRadius: AppTokens.radius16,
+          borderSide: const BorderSide(color: AppTokens.navy, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.errorRed),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -140,7 +144,7 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppTokens.mint600;
+            return AppTokens.navy;
           }
           return AppTokens.gray200;
         }),
@@ -148,18 +152,18 @@ class AppTheme {
 
       // Slider
       sliderTheme: SliderThemeData(
-        activeTrackColor: AppTokens.mint600,
+        activeTrackColor: AppTokens.navy,
         inactiveTrackColor: AppTokens.gray200,
-        thumbColor: AppTokens.mint600,
-        overlayColor: AppTokens.mint600.withValues(alpha: 0.2),
-        valueIndicatorColor: AppTokens.mint600,
+        thumbColor: AppTokens.navy,
+        overlayColor: AppTokens.navy.withValues(alpha: 0.2),
+        valueIndicatorColor: AppTokens.navy,
         valueIndicatorTextStyle: AppTokens.label.copyWith(color: Colors.white),
       ),
 
       // Chip
       chipTheme: ChipThemeData(
         backgroundColor: AppTokens.gray100,
-        selectedColor: AppTokens.mint600,
+        selectedColor: AppTokens.navy,
         disabledColor: AppTokens.gray100,
         labelStyle: AppTokens.label.copyWith(color: AppTokens.gray700),
         secondaryLabelStyle: AppTokens.label.copyWith(color: Colors.white),
@@ -174,7 +178,7 @@ class AppTheme {
 
       // Snackbar
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: AppTokens.gray900,
+        backgroundColor: AppTokens.navy,
         contentTextStyle: AppTokens.body.copyWith(color: Colors.white),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -190,11 +194,14 @@ class AppTheme {
             top: Radius.circular(AppTokens.r24),
           ),
         ),
-        elevation: AppTokens.e4,
+        elevation: 0,
       ),
 
       // Text theme
-      textTheme: TextTheme(
+      textTheme: Typography.englishLike2021.apply(
+        bodyColor: AppTokens.gray900,
+        displayColor: AppTokens.gray900,
+      ).copyWith(
         displayLarge: AppTokens.display.copyWith(color: AppTokens.gray900),
         displayMedium: AppTokens.display.copyWith(
           fontSize: 36,
@@ -229,6 +236,9 @@ class AppTheme {
         color: AppTokens.gray700,
         size: 24,
       ),
+
+      // Visual density
+      visualDensity: VisualDensity.comfortable,
     );
   }
 
@@ -237,23 +247,26 @@ class AppTheme {
   // ============================================================================
 
   static ThemeData dark() {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: AppTokens.navy,
+      brightness: Brightness.dark,
+    ).copyWith(
+      primary: AppTokens.teal,
+      onPrimary: AppTokens.darkBg,
+      secondary: AppTokens.tealLight,
+      onSecondary: AppTokens.darkBg,
+      tertiary: AppTokens.accentRed,
+      error: AppTokens.errorRed,
+      surface: AppTokens.darkSurface,
+      onSurface: AppTokens.gray100,
+      surfaceContainerHighest: AppTokens.darkBg,
+      outline: AppTokens.darkBorder,
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-
-      // Color scheme - Lower saturation/brightness for dark mode
-      colorScheme: ColorScheme.dark(
-        primary: AppTokens.mint400, // Lighter mint for dark
-        onPrimary: AppTokens.gray900,
-        secondary: AppTokens.amber500,
-        onSecondary: AppTokens.gray900,
-        tertiary: AppTokens.teal500,
-        error: AppTokens.errorRed,
-        surface: AppTokens.darkSurface,
-        onSurface: AppTokens.gray100,
-        surfaceContainerHighest: AppTokens.darkBg,
-        outline: AppTokens.darkBorder,
-      ),
+      colorScheme: scheme,
 
       // Scaffold
       scaffoldBackgroundColor: AppTokens.darkBg,
@@ -269,11 +282,12 @@ class AppTheme {
 
       // Card
       cardTheme: CardThemeData(
-        elevation: AppTokens.e1,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: AppTokens.radius16,
+          borderRadius: AppTokens.radius24,
         ),
         color: AppTokens.darkSurface,
+        surfaceTintColor: scheme.surfaceTint,
         margin: const EdgeInsets.symmetric(
           horizontal: AppTokens.s16,
           vertical: AppTokens.s8,
@@ -283,15 +297,15 @@ class AppTheme {
       // Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTokens.mint400,
-          foregroundColor: AppTokens.gray900,
-          elevation: AppTokens.e1,
+          backgroundColor: AppTokens.teal,
+          foregroundColor: AppTokens.darkBg,
+          elevation: 0,
           padding: const EdgeInsets.symmetric(
-            horizontal: AppTokens.s24,
-            vertical: AppTokens.s16,
+            horizontal: AppTokens.s16,
+            vertical: 14,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: AppTokens.radius12,
+            borderRadius: AppTokens.radius16,
           ),
           textStyle: AppTokens.label,
         ),
@@ -300,7 +314,7 @@ class AppTheme {
       // Text button
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppTokens.mint400,
+          foregroundColor: AppTokens.teal,
           padding: const EdgeInsets.symmetric(
             horizontal: AppTokens.s16,
             vertical: AppTokens.s12,
@@ -315,14 +329,14 @@ class AppTheme {
       // Outlined button
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppTokens.mint400,
-          side: const BorderSide(color: AppTokens.mint400, width: 1.5),
+          foregroundColor: AppTokens.teal,
+          side: const BorderSide(color: AppTokens.teal, width: 1.5),
           padding: const EdgeInsets.symmetric(
             horizontal: AppTokens.s24,
             vertical: AppTokens.s16,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: AppTokens.radius12,
+            borderRadius: AppTokens.radius16,
           ),
           textStyle: AppTokens.label,
         ),
@@ -333,19 +347,19 @@ class AppTheme {
         filled: true,
         fillColor: AppTokens.darkSurface,
         border: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.darkBorder),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.darkBorder),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
-          borderSide: const BorderSide(color: AppTokens.mint400, width: 2),
+          borderRadius: AppTokens.radius16,
+          borderSide: const BorderSide(color: AppTokens.teal, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: AppTokens.radius12,
+          borderRadius: AppTokens.radius16,
           borderSide: const BorderSide(color: AppTokens.errorRed),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -360,13 +374,13 @@ class AppTheme {
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppTokens.gray900;
+            return AppTokens.darkBg;
           }
           return AppTokens.gray500;
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppTokens.mint400;
+            return AppTokens.teal;
           }
           return AppTokens.darkBorder;
         }),
@@ -374,24 +388,24 @@ class AppTheme {
 
       // Slider
       sliderTheme: SliderThemeData(
-        activeTrackColor: AppTokens.mint400,
+        activeTrackColor: AppTokens.teal,
         inactiveTrackColor: AppTokens.darkBorder,
-        thumbColor: AppTokens.mint400,
-        overlayColor: AppTokens.mint400.withValues(alpha: 0.2),
-        valueIndicatorColor: AppTokens.mint400,
+        thumbColor: AppTokens.teal,
+        overlayColor: AppTokens.teal.withValues(alpha: 0.2),
+        valueIndicatorColor: AppTokens.teal,
         valueIndicatorTextStyle: AppTokens.label.copyWith(
-          color: AppTokens.gray900,
+          color: AppTokens.darkBg,
         ),
       ),
 
       // Chip
       chipTheme: ChipThemeData(
         backgroundColor: AppTokens.darkSurface,
-        selectedColor: AppTokens.mint400,
+        selectedColor: AppTokens.teal,
         disabledColor: AppTokens.darkSurface,
         labelStyle: AppTokens.label.copyWith(color: AppTokens.gray200),
         secondaryLabelStyle: AppTokens.label.copyWith(
-          color: AppTokens.gray900,
+          color: AppTokens.darkBg,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: AppTokens.s12,
@@ -405,7 +419,7 @@ class AppTheme {
       // Snackbar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppTokens.gray100,
-        contentTextStyle: AppTokens.body.copyWith(color: AppTokens.gray900),
+        contentTextStyle: AppTokens.body.copyWith(color: AppTokens.darkBg),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: AppTokens.radius12,
@@ -420,11 +434,14 @@ class AppTheme {
             top: Radius.circular(AppTokens.r24),
           ),
         ),
-        elevation: AppTokens.e4,
+        elevation: 0,
       ),
 
       // Text theme
-      textTheme: TextTheme(
+      textTheme: Typography.englishLike2021.apply(
+        bodyColor: AppTokens.gray100,
+        displayColor: AppTokens.gray100,
+      ).copyWith(
         displayLarge: AppTokens.display.copyWith(color: AppTokens.gray100),
         displayMedium: AppTokens.display.copyWith(
           fontSize: 36,
@@ -459,6 +476,9 @@ class AppTheme {
         color: AppTokens.gray200,
         size: 24,
       ),
+
+      // Visual density
+      visualDensity: VisualDensity.comfortable,
     );
   }
 }

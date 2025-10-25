@@ -66,7 +66,7 @@ class _SimulateScreenState extends ConsumerState<SimulateScreen> {
                     '\$${_amount.toStringAsFixed(2)}',
                     style: AppTokens.display.copyWith(
                       fontSize: 36,
-                      color: AppTokens.mint600,
+                      color: AppTokens.navy,
                     ),
                   ),
                   Slider(
@@ -164,12 +164,12 @@ class _SimulateScreenState extends ConsumerState<SimulateScreen> {
 
           // Info card
           Card(
-            color: AppTokens.mint50,
+            color: AppTokens.grayBg,
             child: Padding(
               padding: const EdgeInsets.all(AppTokens.s16),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline, color: AppTokens.mint600),
+                  const Icon(Icons.info_outline, color: AppTokens.navy),
                   const SizedBox(width: AppTokens.s12),
                   Expanded(
                     child: Text(
@@ -244,7 +244,7 @@ class _SimulateScreenState extends ConsumerState<SimulateScreen> {
             '${transaction.merchant} \$${transaction.amount.toStringAsFixed(2)} — '
             '+\$${result.amount.toStringAsFixed(2)} saved!',
           ),
-          backgroundColor: AppTokens.mint600,
+          backgroundColor: AppTokens.navy,
           duration: const Duration(seconds: 3),
         ),
       );

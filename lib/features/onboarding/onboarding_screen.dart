@@ -80,7 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 8,
                     decoration: BoxDecoration(
                       color: _currentPage == index
-                          ? AppTokens.mint600
+                          ? AppTokens.navy
                           : AppTokens.gray200,
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -141,13 +141,13 @@ class _OnboardingPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(AppTokens.s32),
             decoration: BoxDecoration(
-              color: AppTokens.mint600.withValues(alpha: 0.1),
+              color: AppTokens.navy.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
               icon,
               size: 80,
-              color: AppTokens.mint600,
+              color: AppTokens.navy,
             ),
           ),
 

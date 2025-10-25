@@ -16,7 +16,7 @@ class InfoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bannerColor = tint ?? AppTokens.amber500;
+    final bannerColor = tint ?? AppTokens.accentRed;
 
     return Container(
       margin: const EdgeInsets.symmetric(
