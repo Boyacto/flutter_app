@@ -23,6 +23,27 @@ final missionsProvider = FutureProvider<List<Mission>>((ref) async {
 });
 
 // ============================================================================
+// COMPLETE MISSION ACTION
+// ============================================================================
+
+final completeMissionProvider = Provider((ref) {
+  return (String missionId) async {
+    final service = ref.read(rewardsServiceProvider);
+
+    // Complete the mission
+    final mission = await service.completeMission(missionId);
+
+    // Award points
+    ref.read(userBalanceProvider.notifier).addPoints(mission.rewardPoints);
+
+    // Invalidate missions list to refresh
+    ref.invalidate(missionsProvider);
+
+    return mission;
+  };
+});
+
+// ============================================================================
 // COUPONS
 // ============================================================================
 

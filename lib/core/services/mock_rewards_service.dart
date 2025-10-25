@@ -107,6 +107,33 @@ class MockRewardsService {
     return List.from(_missions);
   }
 
+  Future<Mission> completeMission(String missionId) async {
+    await Future.delayed(const Duration(milliseconds: 400));
+
+    final index = _missions.indexWhere((m) => m.id == missionId);
+    if (index == -1) {
+      throw Exception('Mission not found');
+    }
+
+    final mission = _missions[index];
+
+    if (mission.status == MissionStatus.locked) {
+      throw Exception('Mission is locked');
+    }
+
+    if (mission.status == MissionStatus.completed) {
+      throw Exception('Mission already completed');
+    }
+
+    // Update mission to completed
+    _missions[index] = mission.copyWith(
+      status: MissionStatus.completed,
+      completedAt: DateTime.now(),
+    );
+
+    return _missions[index];
+  }
+
   Future<List<Coupon>> fetchAvailableCoupons() async {
     await Future.delayed(const Duration(milliseconds: 300));
     return List.from(_availableCoupons);

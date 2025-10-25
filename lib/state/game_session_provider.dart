@@ -16,6 +16,13 @@ final gameServiceProvider = Provider<MockGameService>((ref) {
 // GAME STATE
 // ============================================================================
 
+/// Provider for listing all available games
+final gamesProvider = FutureProvider<List<Game>>((ref) async {
+  final service = ref.read(gameServiceProvider);
+  final game = await service.fetchGame();
+  return [game]; // For now, we only have one game
+});
+
 final gameProvider =
     StateNotifierProvider<GameNotifier, AsyncValue<Game>>((ref) {
   return GameNotifier(ref);
