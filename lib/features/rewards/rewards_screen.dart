@@ -6,6 +6,7 @@ import '../../state/rewards_providers.dart';
 import '../../state/game_session_provider.dart';
 import '../../theme/tokens.dart';
 import '../../app_router.dart';
+import '../../core/models/mission.dart';
 import 'widgets/points_counter.dart';
 import '../../core/widgets/mission_card.dart';
 import '../../core/widgets/game_card.dart';
@@ -112,6 +113,12 @@ class RewardsScreen extends ConsumerWidget {
                       child: MissionCardWidget(
                         mission: mission,
                         onTap: () async {
+                          // Skip if already completed or locked
+                          if (mission.status == MissionStatus.completed ||
+                              mission.status == MissionStatus.locked) {
+                            return;
+                          }
+
                           // Complete the mission
                           try {
                             final completeMissionAction =

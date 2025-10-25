@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/models/jar_v2.dart';
 import '../../state/jar_providers.dart';
 import '../../theme/tokens.dart';
 import 'widgets/streak_header.dart';
@@ -17,18 +18,29 @@ class JarDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Set the selected jar
-    ref.listen(selectedJarIdProvider, (previous, next) {});
-    ref.read(selectedJarIdProvider.notifier).state = jarId;
+    final jarsAsync = ref.watch(jarsProvider);
 
-    final jar = ref.watch(selectedJarProvider);
-
-    if (jar == null) {
-      return Scaffold(
+    return jarsAsync.when(
+      loading: () => Scaffold(
         appBar: AppBar(title: const Text('Jar')),
-        body: const Center(child: Text('Jar not found')),
-      );
-    }
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (err, stack) => Scaffold(
+        appBar: AppBar(title: const Text('Jar')),
+        body: Center(child: Text('Error: $err')),
+      ),
+      data: (jars) {
+        final jar = jars.firstWhere(
+          (j) => j.id == jarId,
+          orElse: () => throw Exception('Jar not found'),
+        );
+
+        return _buildJarDetail(context, ref, jar);
+      },
+    );
+  }
+
+  Widget _buildJarDetail(BuildContext context, WidgetRef ref, JarV2 jar) {
 
     return Scaffold(
       appBar: AppBar(
