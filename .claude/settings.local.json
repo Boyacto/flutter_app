@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(flutter pub get:*)",
-      "Bash(flutter analyze:*)"
+      "Bash(flutter analyze:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: implement complete Jar Detail screen with all features\n\n- Create Jar Detail screen with full functionality\n- Add streak header showing days streak with fire emoji\n- Implement pull-to-reveal deposit amount with haptic feedback and coin-drop animation\n- Build affordability strip showing what deposit amount can buy\n- Create saving mode selector (Manual/Auto-Save/Coupons) with SegmentedButton\n- Add TIP sheet modal explaining each saving mode\n- Build deposit bottom sheet with preset amounts (10K, 50K, 100K, 200K) and custom input\n- Implement jar activity list showing recent deposits with timestamps\n- Wire up navigation from Home screen to Jar Detail screen\n- Create utility widgets: AnimatedCounter, feature flags, asset constants\n- Add deposit functionality that updates balance and streak\n\nFeatures implemented:\n✅ Streak tracking with automatic increment/reset logic\n✅ Pull-to-refresh reveals masked deposit amount for 3 seconds\n✅ Coin drop animation when revealing amount\n✅ Dynamic affordability strip based on deposit amount\n✅ Mode switching between Manual, Auto-Save AI, and Brand Coupons\n✅ Contextual tips for each saving mode\n✅ Optimistic UI updates on deposit\n✅ Activity log with relative timestamps\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

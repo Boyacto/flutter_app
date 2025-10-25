@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_shell.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/settings/settings_screen.dart';
+import 'features/jar/jar_detail_screen.dart';
 
 /// App routing configuration
 class AppRouter {
@@ -26,13 +27,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
 
       case '/jar-detail':
-        // final jarId = settings.arguments as String;
-        // return MaterialPageRoute(builder: (_) => JarDetailScreen(jarId: jarId));
-        // TODO: Implement jar detail screen
+        final jarId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('Jar Detail - Coming soon')),
-          ),
+          builder: (_) => JarDetailScreen(jarId: jarId),
         );
 
       case '/game':

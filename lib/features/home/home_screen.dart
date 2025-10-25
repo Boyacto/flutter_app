@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../state/app_providers.dart';
 import '../../state/jar_providers.dart';
 import '../../theme/tokens.dart';
+import '../../app_router.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -108,7 +109,11 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () {
-                              // TODO: Navigate to jar detail
+                              Navigator.pushNamed(
+                                context,
+                                AppRouter.jarDetail,
+                                arguments: jar.id,
+                              );
                             },
                           ),
                         );
