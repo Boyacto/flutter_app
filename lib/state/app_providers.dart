@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/models/user_balance.dart';
@@ -9,15 +8,10 @@ import '../core/services/storage_service.dart';
 // ============================================================================
 
 final storageServiceProvider = Provider<StorageService>((ref) {
-  final service = StorageService();
-  return service;
+  throw UnimplementedError(
+    'storageServiceProvider must be overridden in main.dart with an initialized instance',
+  );
 });
-
-// ============================================================================
-// THEME MODE
-// ============================================================================
-
-final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
 // ============================================================================
 // USER BALANCE STATE
@@ -38,7 +32,6 @@ class UserBalanceNotifier extends StateNotifier<UserBalance> {
   Future<void> _loadBalance() async {
     try {
       final storage = ref.read(storageServiceProvider);
-      await storage.init();
       final saved = storage.loadUserBalance();
       if (saved != null) {
         state = saved;
@@ -94,12 +87,15 @@ class UserBalanceNotifier extends StateNotifier<UserBalance> {
     _save();
   }
 
-  Future<void> _save() async {
-    try {
-      final storage = ref.read(storageServiceProvider);
-      await storage.saveUserBalance(state);
-    } catch (e) {
-      // Handle error silently for now
-    }
+  void _save() {
+    // Fire-and-forget: save asynchronously without blocking UI
+    Future(() async {
+      try {
+        final storage = ref.read(storageServiceProvider);
+        await storage.saveUserBalance(state);
+      } catch (e) {
+        // Handle error silently for now
+      }
+    });
   }
 }

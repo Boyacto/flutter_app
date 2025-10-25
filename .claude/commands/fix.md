@@ -1,0 +1,1 @@
+ execute 'flutter analyze' and fix all the error in project. Must ignore warnings. (project, gitignored)

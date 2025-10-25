@@ -140,13 +140,13 @@ class AppTheme {
           if (states.contains(WidgetState.selected)) {
             return Colors.white;
           }
-          return AppTokens.gray200;
+          return Colors.white; // White thumb when off
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return AppTokens.navy;
           }
-          return AppTokens.gray200;
+          return AppTokens.gray300; // Grey track when off
         }),
       ),
 
@@ -376,13 +376,13 @@ class AppTheme {
           if (states.contains(WidgetState.selected)) {
             return AppTokens.darkBg;
           }
-          return AppTokens.gray500;
+          return AppTokens.gray300; // Light grey thumb when off
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return AppTokens.teal;
           }
-          return AppTokens.darkBorder;
+          return AppTokens.gray600; // Darker track when off
         }),
       ),
 

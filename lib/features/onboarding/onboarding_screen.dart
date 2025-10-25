@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../theme/tokens.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -18,18 +19,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  Future<void> _completeOnboarding() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('onboarding_complete', true);
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/');
+      }
+    } catch (e) {
+      // Handle error
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/');
+      }
+    }
+  }
+
+  void _skip() {
+    _completeOnboarding();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // Close button
+            // Skip button
             Align(
               alignment: Alignment.topRight,
-              child: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+              child: TextButton(
+                onPressed: _skip,
+                child: const Text('Skip'),
               ),
             ),
 
@@ -40,28 +60,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: const [
                   _OnboardingPage(
-                    icon: Icons.savings,
-                    title: 'Save Spare Change',
+                    emoji: '💰',
+                    title: 'Smart Jars',
                     description:
-                        'Round up your purchases to the nearest dollar and save the difference automatically.',
+                        'Create jars for your savings goals. Round up purchases automatically and watch your savings grow!',
                   ),
                   _OnboardingPage(
-                    icon: Icons.account_balance,
-                    title: 'Connect Your Account',
+                    emoji: '🎮',
+                    title: 'Play & Earn',
                     description:
-                        'Link your bank account to track transactions and save automatically.',
-                  ),
-                  _OnboardingPage(
-                    icon: Icons.tune,
-                    title: 'Set Your Rules',
-                    description:
-                        'Customize round-up amounts, categories, and spending limits to fit your needs.',
-                  ),
-                  _OnboardingPage(
-                    icon: Icons.emoji_events,
-                    title: 'Reach Your Goals',
-                    description:
-                        'Set savings goals and watch your balance grow with every purchase.',
+                        'Play fun AR games, complete missions, and earn real money and rewards while you save!',
                   ),
                 ],
               ),
@@ -73,7 +81,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  4,
+                  2,
                   (index) => Container(
                     margin: const EdgeInsets.symmetric(horizontal: AppTokens.s4),
                     width: _currentPage == index ? 24 : 8,
@@ -96,19 +104,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_currentPage < 3) {
+                    if (_currentPage < 1) {
                       _pageController.nextPage(
                         duration: AppTokens.normal,
                         curve: AppTokens.easeInOut,
                       );
                     } else {
-                      Navigator.pushReplacementNamed(context, '/home');
+                      _completeOnboarding();
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: AppTokens.s20),
                   ),
-                  child: Text(_currentPage < 3 ? 'Next' : 'Get Started'),
+                  child: Text(_currentPage < 1 ? 'Next' : 'Get Started'),
                 ),
               ),
             ),
@@ -120,12 +128,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingPage extends StatelessWidget {
-  final IconData icon;
+  final String emoji;
   final String title;
   final String description;
 
   const _OnboardingPage({
-    required this.icon,
+    required this.emoji,
     required this.title,
     required this.description,
   });
@@ -137,17 +145,16 @@ class _OnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Icon
+          // Emoji
           Container(
             padding: const EdgeInsets.all(AppTokens.s32),
             decoration: BoxDecoration(
-              color: AppTokens.navy.withValues(alpha: 0.1),
+              color: AppTokens.navy.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              size: 80,
-              color: AppTokens.navy,
+            child: Text(
+              emoji,
+              style: TextStyle(fontSize: 80),
             ),
           ),
 
@@ -169,7 +176,7 @@ class _OnboardingPage extends StatelessWidget {
           Text(
             description,
             style: AppTokens.body.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
             textAlign: TextAlign.center,
           ),

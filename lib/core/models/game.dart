@@ -4,6 +4,7 @@ class Game {
   final String title;
   final String thumbnail; // Emoji initially: 🏀
   final String description;
+  final String instructions; // How to play instructions
   final int maxAttemptsPerDay;
   final int remainingAttempts;
   final int bonusRetries; // From share action
@@ -17,6 +18,7 @@ class Game {
     required this.title,
     required this.thumbnail,
     required this.description,
+    this.instructions = '',
     required this.maxAttemptsPerDay,
     required this.remainingAttempts,
     this.bonusRetries = 0,
@@ -33,6 +35,7 @@ class Game {
     String? title,
     String? thumbnail,
     String? description,
+    String? instructions,
     int? maxAttemptsPerDay,
     int? remainingAttempts,
     int? bonusRetries,
@@ -46,6 +49,7 @@ class Game {
       title: title ?? this.title,
       thumbnail: thumbnail ?? this.thumbnail,
       description: description ?? this.description,
+      instructions: instructions ?? this.instructions,
       maxAttemptsPerDay: maxAttemptsPerDay ?? this.maxAttemptsPerDay,
       remainingAttempts: remainingAttempts ?? this.remainingAttempts,
       bonusRetries: bonusRetries ?? this.bonusRetries,
@@ -61,6 +65,7 @@ class Game {
         'title': title,
         'thumbnail': thumbnail,
         'description': description,
+        'instructions': instructions,
         'maxAttemptsPerDay': maxAttemptsPerDay,
         'remainingAttempts': remainingAttempts,
         'bonusRetries': bonusRetries,
@@ -75,6 +80,7 @@ class Game {
         title: json['title'] as String,
         thumbnail: json['thumbnail'] as String,
         description: json['description'] as String,
+        instructions: json['instructions'] as String? ?? '',
         maxAttemptsPerDay: json['maxAttemptsPerDay'] as int,
         remainingAttempts: json['remainingAttempts'] as int,
         bonusRetries: json['bonusRetries'] as int? ?? 0,

@@ -28,7 +28,10 @@ class AppTokens {
   static const Color grayBg = Color(0xFFECEFF3);
   static const Color gray900 = Color(0xFF111827);
   static const Color gray700 = Color(0xFF374151);
+  static const Color gray600 = Color(0xFF4B5563);
   static const Color gray500 = Color(0xFF6B7280);
+  static const Color gray400 = Color(0xFF9CA3AF);
+  static const Color gray300 = Color(0xFFD1D5DB);
   static const Color gray200 = Color(0xFFE5E7EB);
   static const Color gray100 = Color(0xFFF3F4F6);
   static const Color gray50 = Color(0xFFF9FAFB);
@@ -47,7 +50,9 @@ class AppTokens {
   // SPACING
   // ============================================================================
 
+  static const double s2 = 2.0;
   static const double s4 = 4.0;
+  static const double s6 = 6.0;
   static const double s8 = 8.0;
   static const double s12 = 12.0;
   static const double s16 = 16.0;

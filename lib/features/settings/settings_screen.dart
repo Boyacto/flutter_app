@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../theme/tokens.dart';
 import '../../state/providers.dart';
+import '../../state/app_providers.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -195,11 +196,11 @@ class SettingsScreen extends ConsumerWidget {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
-              // Reset jar
-              ref.read(jarProvider.notifier).reset();
-              // Clear events
-              ref.read(eventsProvider.notifier).clearAll();
+            onPressed: () async {
+              // Clear all data
+              final storage = ref.read(storageServiceProvider);
+              await storage.clearAll();
+
               // Reset settings
               ref.read(localeProvider.notifier).setLocale('en_US');
               ref.read(themeModeProvider.notifier).setThemeMode('system');

@@ -13,7 +13,7 @@ class UserBalance {
   });
 
   factory UserBalance.initial() => UserBalance(
-        currentBalance: 1500000.0, // ₩1,500,000 starting balance
+        currentBalance: 1500.0, // $1,500 starting balance
         points: 150, // 150 starting points
         couponsCount: 0,
         lastUpdated: DateTime.now(),

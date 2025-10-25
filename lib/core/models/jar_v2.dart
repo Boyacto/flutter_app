@@ -1,9 +1,4 @@
-/// Saving modes for jars
-enum SavingMode {
-  manual, // Manual coin saving
-  autoSave, // Auto-Save AI
-  brandCoupons, // Brand Coupons
-}
+import 'brand_collaboration.dart';
 
 /// Jar activity entry
 class JarActivity {
@@ -64,7 +59,13 @@ class JarV2 {
   final int streakDays;
   final double todayDeposit;
   final DateTime lastDepositDate;
-  final SavingMode savingMode;
+
+  // Saving feature toggles (replacing SavingMode enum)
+  final bool isCoinSavingEnabled; // Save up to $1 every day
+  final bool isAutoSaveEnabled; // AI analyzes spending and saves $1-$10/week
+  final bool isBrandCollabEnabled; // Participate in brand collaboration
+
+  final BrandCollaboration? brandCollaboration; // Brand details if enabled
   final List<JarActivity> activities;
   final DateTime createdAt;
 
@@ -77,7 +78,10 @@ class JarV2 {
     this.streakDays = 0,
     this.todayDeposit = 0,
     required this.lastDepositDate,
-    this.savingMode = SavingMode.manual,
+    this.isCoinSavingEnabled = false,
+    this.isAutoSaveEnabled = false,
+    this.isBrandCollabEnabled = false,
+    this.brandCollaboration,
     this.activities = const [],
     required this.createdAt,
   });
@@ -94,7 +98,10 @@ class JarV2 {
     int? streakDays,
     double? todayDeposit,
     DateTime? lastDepositDate,
-    SavingMode? savingMode,
+    bool? isCoinSavingEnabled,
+    bool? isAutoSaveEnabled,
+    bool? isBrandCollabEnabled,
+    BrandCollaboration? brandCollaboration,
     List<JarActivity>? activities,
     DateTime? createdAt,
   }) {
@@ -107,7 +114,10 @@ class JarV2 {
       streakDays: streakDays ?? this.streakDays,
       todayDeposit: todayDeposit ?? this.todayDeposit,
       lastDepositDate: lastDepositDate ?? this.lastDepositDate,
-      savingMode: savingMode ?? this.savingMode,
+      isCoinSavingEnabled: isCoinSavingEnabled ?? this.isCoinSavingEnabled,
+      isAutoSaveEnabled: isAutoSaveEnabled ?? this.isAutoSaveEnabled,
+      isBrandCollabEnabled: isBrandCollabEnabled ?? this.isBrandCollabEnabled,
+      brandCollaboration: brandCollaboration ?? this.brandCollaboration,
       activities: activities ?? this.activities,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -122,7 +132,10 @@ class JarV2 {
         'streakDays': streakDays,
         'todayDeposit': todayDeposit,
         'lastDepositDate': lastDepositDate.toIso8601String(),
-        'savingMode': savingMode.name,
+        'isCoinSavingEnabled': isCoinSavingEnabled,
+        'isAutoSaveEnabled': isAutoSaveEnabled,
+        'isBrandCollabEnabled': isBrandCollabEnabled,
+        'brandCollaboration': brandCollaboration?.toJson(),
         'activities': activities.map((a) => a.toJson()).toList(),
         'createdAt': createdAt.toIso8601String(),
       };
@@ -136,10 +149,13 @@ class JarV2 {
         streakDays: json['streakDays'] as int? ?? 0,
         todayDeposit: (json['todayDeposit'] as num?)?.toDouble() ?? 0,
         lastDepositDate: DateTime.parse(json['lastDepositDate'] as String),
-        savingMode: SavingMode.values.firstWhere(
-          (e) => e.name == json['savingMode'],
-          orElse: () => SavingMode.manual,
-        ),
+        isCoinSavingEnabled: json['isCoinSavingEnabled'] as bool? ?? false,
+        isAutoSaveEnabled: json['isAutoSaveEnabled'] as bool? ?? false,
+        isBrandCollabEnabled: json['isBrandCollabEnabled'] as bool? ?? false,
+        brandCollaboration: json['brandCollaboration'] != null
+            ? BrandCollaboration.fromJson(
+                json['brandCollaboration'] as Map<String, dynamic>)
+            : null,
         activities: (json['activities'] as List<dynamic>?)
                 ?.map((a) => JarActivity.fromJson(a as Map<String, dynamic>))
                 .toList() ??

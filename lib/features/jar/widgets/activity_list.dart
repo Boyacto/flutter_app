@@ -20,34 +20,23 @@ class ActivityList extends StatelessWidget {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Recent Activity',
-          style: AppTokens.title.copyWith(color: AppTokens.navy),
-        ),
-        const SizedBox(height: AppTokens.s12),
-
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: activities.length,
-          separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (context, index) {
-            final activity = activities[index];
-            return ListTile(
-              leading: Text(activity.emoji, style: const TextStyle(fontSize: 24)),
-              title: Text(activity.description),
-              subtitle: Text(formatRelativeTime(activity.timestamp)),
-              trailing: Text(
-                formatCurrency(activity.amount),
-                style: AppTokens.label.copyWith(color: AppTokens.teal),
-              ),
-            );
-          },
-        ),
-      ],
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: activities.length,
+      separatorBuilder: (context, index) => const Divider(),
+      itemBuilder: (context, index) {
+        final activity = activities[index];
+        return ListTile(
+          leading: Text(activity.emoji, style: const TextStyle(fontSize: 24)),
+          title: Text(activity.description),
+          subtitle: Text(formatRelativeTime(activity.timestamp)),
+          trailing: Text(
+            formatCurrency(activity.amount),
+            style: AppTokens.label.copyWith(color: AppTokens.teal),
+          ),
+        );
+      },
     );
   }
 }

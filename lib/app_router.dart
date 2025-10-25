@@ -3,6 +3,7 @@ import 'app_shell.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/jar/jar_detail_screen.dart';
+import 'features/game/game_screen.dart';
 
 /// App routing configuration
 class AppRouter {
@@ -27,18 +28,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
 
       case '/jar-detail':
-        final jarId = settings.arguments as String;
+        // Note: JarDetailScreen uses selectedJarProvider for jar ID
         return MaterialPageRoute(
-          builder: (_) => JarDetailScreen(jarId: jarId),
+          builder: (_) => const JarDetailScreen(),
         );
 
       case '/game':
-        // return MaterialPageRoute(builder: (_) => const GameScreen());
-        // TODO: Implement game screen
+        final gameId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('Game - Coming soon')),
-          ),
+          builder: (_) => GameScreen(gameId: gameId),
         );
 
       default:
@@ -54,7 +52,8 @@ class AppRouter {
 
   /// Get initial route
   static String getInitialRoute() {
-    // For hackathon, skip onboarding
+    // Note: Onboarding check is handled in main.dart
+    // This is just the default route
     return home;
   }
 }

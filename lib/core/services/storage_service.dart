@@ -1,23 +1,21 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/jar.dart';
-import '../models/event.dart';
 import '../models/jar_v2.dart';
 import '../models/user_balance.dart';
 import '../models/game.dart';
+import '../models/account.dart';
 
 /// Local storage service using SharedPreferences
 class StorageService {
-  static const String _keyJar = 'jar';
-  static const String _keyEvents = 'events';
   static const String _keyLocale = 'locale';
   static const String _keyThemeMode = 'theme_mode';
   static const String _keyReduceMotion = 'reduce_motion';
 
-  // New OneUp keys
+  // OneUp keys
   static const String _keyJarsV2 = 'jars_v2';
   static const String _keyUserBalance = 'user_balance';
   static const String _keyGameState = 'game_state';
+  static const String _keyAccounts = 'accounts';
 
   SharedPreferences? _prefs;
 
@@ -32,72 +30,6 @@ class StorageService {
       throw Exception('StorageService not initialized. Call init() first.');
     }
     return _prefs!;
-  }
-
-  // ============================================================================
-  // JAR
-  // ============================================================================
-
-  /// Save jar
-  Future<bool> saveJar(Jar jar) async {
-    final json = jsonEncode(jar.toMap());
-    return prefs.setString(_keyJar, json);
-  }
-
-  /// Load jar
-  Jar? loadJar() {
-    final json = prefs.getString(_keyJar);
-    if (json == null) return null;
-
-    try {
-      final map = jsonDecode(json) as Map<String, dynamic>;
-      return Jar.fromMap(map);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /// Clear jar
-  Future<bool> clearJar() async {
-    return prefs.remove(_keyJar);
-  }
-
-  // ============================================================================
-  // EVENTS
-  // ============================================================================
-
-  /// Save events
-  Future<bool> saveEvents(List<Event> events) async {
-    final jsonList = events.map((e) => e.toMap()).toList();
-    final json = jsonEncode(jsonList);
-    return prefs.setString(_keyEvents, json);
-  }
-
-  /// Load events
-  List<Event> loadEvents() {
-    final json = prefs.getString(_keyEvents);
-    if (json == null) return [];
-
-    try {
-      final list = jsonDecode(json) as List;
-      return list
-          .map((item) => Event.fromMap(item as Map<String, dynamic>))
-          .toList();
-    } catch (e) {
-      return [];
-    }
-  }
-
-  /// Add event
-  Future<bool> addEvent(Event event) async {
-    final events = loadEvents();
-    events.insert(0, event); // Add to beginning
-    return saveEvents(events);
-  }
-
-  /// Clear events
-  Future<bool> clearEvents() async {
-    return prefs.remove(_keyEvents);
   }
 
   // ============================================================================
@@ -184,6 +116,32 @@ class StorageService {
   }
 
   // ============================================================================
+  // ONEUP - ACCOUNTS
+  // ============================================================================
+
+  /// Save accounts
+  Future<bool> saveAccounts(List<Account> accounts) async {
+    final jsonList = accounts.map((a) => a.toJson()).toList();
+    final json = jsonEncode(jsonList);
+    return prefs.setString(_keyAccounts, json);
+  }
+
+  /// Load accounts
+  List<Account>? loadAccounts() {
+    final json = prefs.getString(_keyAccounts);
+    if (json == null) return null;
+
+    try {
+      final list = jsonDecode(json) as List;
+      return list
+          .map((item) => Account.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================================================
   // ONEUP - GAME STATE
   // ============================================================================
 
@@ -217,6 +175,6 @@ class StorageService {
 
   /// Check if this is first launch
   bool isFirstLaunch() {
-    return loadJar() == null;
+    return loadJarsV2() == null;
   }
 }

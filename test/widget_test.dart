@@ -17,7 +17,7 @@ void main() {
         overrides: [
           storageServiceProvider.overrideWithValue(storage),
         ],
-        child: const OneUpApp(),
+        child: const OneUpApp(showOnboarding: false),
       ),
     );
 

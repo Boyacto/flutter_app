@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../theme/tokens.dart';
+import '../../app_router.dart';
+import 'widgets/section_list.dart';
 
 class AllScreen extends ConsumerWidget {
   const AllScreen({super.key});
@@ -10,13 +12,29 @@ class AllScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📞 All'),
+        title: const Text('All'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Search - Coming soon!')),
+              );
+            },
+            tooltip: 'Search',
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.settings);
+            },
+            tooltip: 'Settings',
+          ),
+        ],
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(AppTokens.s24),
-          child: Text('All screen - Coming soon'),
-        ),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(AppTokens.s16),
+        child: SectionList(),
       ),
     );
   }

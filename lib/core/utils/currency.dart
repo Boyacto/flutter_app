@@ -43,7 +43,7 @@ class CurrencyFormatter {
   }
 }
 
-/// Helper function for quick currency formatting (KRW)
+/// Helper function for quick currency formatting (USD)
 String formatCurrency(double amount) {
-  return CurrencyFormatter.formatKRW(amount);
+  return CurrencyFormatter.formatUSD(amount);
 }

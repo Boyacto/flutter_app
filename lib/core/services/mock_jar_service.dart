@@ -1,9 +1,10 @@
 import '../models/jar_v2.dart';
+import '../models/brand_collaboration.dart';
 import '../utils/currency.dart';
 
 /// Mock service for jar operations
 class MockJarService {
-  // Demo data: 3 pre-populated jars
+  // Demo data: 2 pre-populated jars
   List<JarV2> _jars = [];
 
   MockJarService() {
@@ -13,76 +14,100 @@ class MockJarService {
   void _initializeDemoJars() {
     final now = DateTime.now();
 
+    // OXXO brand collaboration data
+    final oxxoCollaboration = BrandCollaboration(
+      brandName: 'OXXO',
+      brandColor: '#E12019',
+      rewards: [
+        BrandReward(
+          id: 'oxxo-1',
+          emoji: '☕',
+          title: 'Café Andatti Gourmet discount coupon',
+          description: 'Save just 1 time and get discount',
+        ),
+        BrandReward(
+          id: 'oxxo-2',
+          emoji: '🍫',
+          title: 'Free chocolate bar',
+          description: 'Complete 3 deposits to unlock',
+        ),
+        BrandReward(
+          id: 'oxxo-3',
+          emoji: '🥤',
+          title: 'Free drink of choice',
+          description: r'Reach $50 to unlock this reward',
+        ),
+      ],
+    );
+
     _jars = [
       JarV2(
         id: '1',
         emoji: '🏖️',
-        name: 'Beach Vacation',
-        currentBalance: 450000,
-        goalAmount: 2000000,
+        name: 'Jar',
+        currentBalance: 45.0, // $45
+        goalAmount: 100.0, // Fixed at $100
         streakDays: 12,
-        todayDeposit: 15000,
+        todayDeposit: 1.50,
         lastDepositDate: now,
-        savingMode: SavingMode.autoSave,
+        isCoinSavingEnabled: true,
+        isAutoSaveEnabled: false,
+        isBrandCollabEnabled: false,
         activities: [
           JarActivity(
             id: '1-1',
             emoji: '💰',
-            description: 'Deposited ${formatCurrency(15000)}',
-            amount: 15000,
+            description: 'Deposited ${formatCurrency(1.50)}',
+            amount: 1.50,
             timestamp: now,
           ),
           JarActivity(
             id: '1-2',
             emoji: '💰',
-            description: 'Deposited ${formatCurrency(10000)}',
-            amount: 10000,
+            description: 'Deposited ${formatCurrency(1.00)}',
+            amount: 1.00,
             timestamp: now.subtract(const Duration(days: 1)),
+          ),
+          JarActivity(
+            id: '1-3',
+            emoji: '💰',
+            description: 'Deposited ${formatCurrency(2.50)}',
+            amount: 2.50,
+            timestamp: now.subtract(const Duration(days: 2)),
           ),
         ],
         createdAt: now.subtract(const Duration(days: 30)),
       ),
       JarV2(
         id: '2',
-        emoji: '🎮',
-        name: 'Gaming Setup',
-        currentBalance: 1200000,
-        goalAmount: 3000000,
+        emoji: '🏪',
+        name: 'Jar with OXXO',
+        currentBalance: 3.50, // $3.50 (between $1-5 for coffee affordability)
+        goalAmount: 100.0, // Fixed at $100
         streakDays: 5,
-        todayDeposit: 25000,
+        todayDeposit: 0.50,
         lastDepositDate: now,
-        savingMode: SavingMode.manual,
+        isCoinSavingEnabled: false,
+        isAutoSaveEnabled: true,
+        isBrandCollabEnabled: true,
+        brandCollaboration: oxxoCollaboration,
         activities: [
           JarActivity(
             id: '2-1',
             emoji: '💰',
-            description: 'Deposited ${formatCurrency(25000)}',
-            amount: 25000,
+            description: 'Deposited ${formatCurrency(0.50)}',
+            amount: 0.50,
             timestamp: now,
+          ),
+          JarActivity(
+            id: '2-2',
+            emoji: '☕',
+            description: 'Brand reward earned',
+            amount: 0.0,
+            timestamp: now.subtract(const Duration(hours: 2)),
           ),
         ],
         createdAt: now.subtract(const Duration(days: 15)),
-      ),
-      JarV2(
-        id: '3',
-        emoji: '🚗',
-        name: 'Car Fund',
-        currentBalance: 8000000,
-        goalAmount: 20000000,
-        streakDays: 45,
-        todayDeposit: 50000,
-        lastDepositDate: now,
-        savingMode: SavingMode.brandCoupons,
-        activities: [
-          JarActivity(
-            id: '3-1',
-            emoji: '💰',
-            description: 'Deposited ${formatCurrency(50000)}',
-            amount: 50000,
-            timestamp: now,
-          ),
-        ],
-        createdAt: now.subtract(const Duration(days: 90)),
       ),
     ];
   }
@@ -98,21 +123,25 @@ class MockJarService {
   }
 
   Future<JarV2> createJar({
-    required String emoji,
-    required String name,
-    required double goalAmount,
+    String? emoji,
+    String? name,
   }) async {
     await Future.delayed(const Duration(milliseconds: 300));
 
+    // Use empty jar emoji for new jars ($0)
+    final defaultEmoji = '🫙';
+
     final newJar = JarV2(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      emoji: emoji,
-      name: name,
+      emoji: emoji ?? defaultEmoji,
+      name: name ?? 'Jar',
       currentBalance: 0,
-      goalAmount: goalAmount,
+      goalAmount: 100.0, // Always $100
       streakDays: 0,
       todayDeposit: 0,
-      savingMode: SavingMode.manual,
+      isCoinSavingEnabled: false,
+      isAutoSaveEnabled: false,
+      isBrandCollabEnabled: false,
       activities: [],
       createdAt: DateTime.now(),
       lastDepositDate: DateTime.now(),
@@ -176,13 +205,35 @@ class MockJarService {
     _jars.removeWhere((j) => j.id == jarId);
   }
 
-  Future<JarV2> updateMode(String jarId, SavingMode mode) async {
+  Future<JarV2> updateCoinSaving(String jarId, bool enabled) async {
     await Future.delayed(const Duration(milliseconds: 300));
 
     final index = _jars.indexWhere((j) => j.id == jarId);
     if (index == -1) throw Exception('Jar not found');
 
-    final updatedJar = _jars[index].copyWith(savingMode: mode);
+    final updatedJar = _jars[index].copyWith(isCoinSavingEnabled: enabled);
+    _jars[index] = updatedJar;
+    return updatedJar;
+  }
+
+  Future<JarV2> updateAutoSave(String jarId, bool enabled) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final index = _jars.indexWhere((j) => j.id == jarId);
+    if (index == -1) throw Exception('Jar not found');
+
+    final updatedJar = _jars[index].copyWith(isAutoSaveEnabled: enabled);
+    _jars[index] = updatedJar;
+    return updatedJar;
+  }
+
+  Future<JarV2> updateBrandCollab(String jarId, bool enabled) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    final index = _jars.indexWhere((j) => j.id == jarId);
+    if (index == -1) throw Exception('Jar not found');
+
+    final updatedJar = _jars[index].copyWith(isBrandCollabEnabled: enabled);
     _jars[index] = updatedJar;
     return updatedJar;
   }

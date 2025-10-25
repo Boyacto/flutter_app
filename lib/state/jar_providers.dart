@@ -44,16 +44,14 @@ class JarsNotifier extends StateNotifier<AsyncValue<List<JarV2>>> {
     await _loadJars();
   }
 
-  Future<void> createJar({
-    required String emoji,
-    required String name,
-    required double goalAmount,
+  Future<JarV2> createJar({
+    String? emoji,
+    String? name,
   }) async {
     final service = ref.read(jarServiceProvider);
     final newJar = await service.createJar(
       emoji: emoji,
       name: name,
-      goalAmount: goalAmount,
     );
 
     state.whenData((jars) {
@@ -61,6 +59,8 @@ class JarsNotifier extends StateNotifier<AsyncValue<List<JarV2>>> {
       state = AsyncValue.data(updated);
       _saveToStorage(updated);
     });
+
+    return newJar;
   }
 
   Future<void> deposit(String jarId, double amount) async {
@@ -96,9 +96,9 @@ class JarsNotifier extends StateNotifier<AsyncValue<List<JarV2>>> {
     });
   }
 
-  Future<void> updateMode(String jarId, SavingMode mode) async {
+  Future<void> updateCoinSaving(String jarId, bool enabled) async {
     final service = ref.read(jarServiceProvider);
-    final updatedJar = await service.updateMode(jarId, mode);
+    final updatedJar = await service.updateCoinSaving(jarId, enabled);
 
     state.whenData((jars) {
       final index = jars.indexWhere((j) => j.id == jarId);
@@ -111,13 +111,46 @@ class JarsNotifier extends StateNotifier<AsyncValue<List<JarV2>>> {
     });
   }
 
-  Future<void> _saveToStorage(List<JarV2> jars) async {
-    try {
-      final storage = ref.read(storageServiceProvider);
-      await storage.saveJarsV2(jars);
-    } catch (e) {
-      // Handle error silently
-    }
+  Future<void> updateAutoSave(String jarId, bool enabled) async {
+    final service = ref.read(jarServiceProvider);
+    final updatedJar = await service.updateAutoSave(jarId, enabled);
+
+    state.whenData((jars) {
+      final index = jars.indexWhere((j) => j.id == jarId);
+      if (index != -1) {
+        final updated = [...jars];
+        updated[index] = updatedJar;
+        state = AsyncValue.data(updated);
+        _saveToStorage(updated);
+      }
+    });
+  }
+
+  Future<void> updateBrandCollab(String jarId, bool enabled) async {
+    final service = ref.read(jarServiceProvider);
+    final updatedJar = await service.updateBrandCollab(jarId, enabled);
+
+    state.whenData((jars) {
+      final index = jars.indexWhere((j) => j.id == jarId);
+      if (index != -1) {
+        final updated = [...jars];
+        updated[index] = updatedJar;
+        state = AsyncValue.data(updated);
+        _saveToStorage(updated);
+      }
+    });
+  }
+
+  void _saveToStorage(List<JarV2> jars) {
+    // Fire-and-forget: save asynchronously without blocking UI
+    Future(() async {
+      try {
+        final storage = ref.read(storageServiceProvider);
+        await storage.saveJarsV2(jars);
+      } catch (e) {
+        // Handle error silently
+      }
+    });
   }
 }
 
